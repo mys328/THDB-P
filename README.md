@@ -1,17 +1,15 @@
-# THDB-P
+# THDB-P多页面应用
+> 卡车之家大数据PC平台
 
+## Build Setup
 
-## Install
-```bush
+``` bash
+# install dependencies
 npm install
-```
-## Run
-### Development
-```bush
+
+# serve with hot reload at localhost:8080
 npm run dev
-```
-### Production(Build)
-```bush
+
+# build for production with minification
 npm run build
 ```
-

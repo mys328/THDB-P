@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1ofygkfx8ipsc3di.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1ofygkfx8ipsc3di.ttf') format('truetype');
+}
+
+.ffm {
+  font-family: 'iconfont' !important;
+  font-size:0.23rem;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ico-y:before{ content: '\e677';}
+.ico-add:before{ content: '\e678';}
+.ico-logbtn:before{ content: '\e67a';}
+.ico-zan:before{ content: '\e681';}
+
+.ico-bang:before{ content: '\e65f';}
+.ico-pop:before{ content: '\e682';}
+
+
+.ico-hom:before{ content: '\e642';}
+.ico-hz:before{ content: '\e63b';}
+.ico-fo:before{ content: '\e640';}
