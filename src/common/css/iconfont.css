@@ -1,27 +1,22 @@
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_1ofygkfx8ipsc3di.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1ofygkfx8ipsc3di.ttf') format('truetype');
+  src: url('//at.alicdn.com/t/font_nzqj9liryigujtt9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_nzqj9liryigujtt9.ttf') format('truetype');
 }
 
-.ffm {
+.fso{
   font-family: 'iconfont' !important;
-  font-size:0.23rem;
+  font-size:14px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.ico-y:before{ content: '\e677';}
-.ico-add:before{ content: '\e678';}
-.ico-logbtn:before{ content: '\e67a';}
-.ico-zan:before{ content: '\e681';}
+.icon-so:before{ content: '\7d22';}
 
-.ico-bang:before{ content: '\e65f';}
-.ico-pop:before{ content: '\e682';}
+.icon-ai:before{ content: '\5bdf';}
+.icon-mi:before{ content: '\6d4b';}
+.icon-pp:before{ content: '\6398';}
+.icon-xx:before{ content: '\4e89';}
 
-
-.ico-hom:before{ content: '\e642';}
-.ico-hz:before{ content: '\e63b';}
-.ico-fo:before{ content: '\e640';}
