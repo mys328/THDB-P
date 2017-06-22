@@ -18,9 +18,31 @@
           </Poptip>
         </div>
         <div class="inx-top-r flex-wrap row-flex midCenter page">
+
+          <Poptip v-if="isLogin" placement="bottom" trigger="hover">
+            <div class="logo-box flex-wrap row-flex midCenter">
+              <img src="https://i.kcimg.cn/data/avatar/noavatar_big.gif-50x50.jpg" class="im-logo" />
+              <div class="fso icon-dow">我是用户Y</div>
+              <i></i>
+            </div>
+            <div slot="title" class="user-tit"></div>
+            <div slot="content" class="user-box">
+              <h3>账号信息</h3>
+              <div>账号：从西安来</div>
+              <div>权限：普通用户</div>
+              <h3 class="line">关联账号</h3>
+              <div>电话：32323323<a>修改</a></div>
+              <div>邮箱：343434<a>修改</a></div>
+              <div class="us-ft-box flex-wrap row-flex">
+                <Button type="ghost" class="gre-bt" @click="Fpwd = true">更改密码</Button>
+                <Button type="ghost" class="red-bt">退出登录</Button>
+              </div>
+            </div>
+          </Poptip>
+          <div v-if="isLogin">使用说明</div>
           <div>咨询详情</div>
-          <div>注册</div>
-          <div class="log-btn" @click="logBox = true">登录</div>
+          <div v-if="!isLogin">注册</div>
+          <div v-if="!isLogin" class="log-btn" @click="logBox = true">登录</div>
         </div>
       </div>
     </div>
@@ -47,17 +69,14 @@
     <div class="inx-ft-box">Copyright ©2009~2017 www.360che.com All Rights Reserved. 卡车之家 版权所有 社会信用代码：911101056787733227</div>
 
     <div class="flt-qq">
-      <div class="rt-blue">
-        <i></i>
-        联系我们
-      </div>
-      <div class="lf-qq">
-        <div class="txt">
-          <i></i>
-          404828990
+      <Poptip placement="left" trigger="hover">
+        <div class="rt-blue"><i class="fso icon-phone"></i>联系我们</div>
+        <div slot="content" class="lf-qq">
+          <div><img src="./images/qq.png" />404828990</div>
+          <div class="txt">立即咨询，给您最专业的指导</div>
+          <span></span>
         </div>
-        <p>立即咨询，给您最专业的指导</p>
-      </div>
+      </Poptip>
     </div>
 
     <Modal v-model="logBox" width="500">
@@ -74,16 +93,8 @@
       <p slot="footer"></p>
     </Modal>
 
-    <Modal v-model="logBox2" width="500">
-      <p slot="header" style="text-align:center;">填写个人信息，方便我们与您联系</p>
-      <div style="text-align:center">
-        <p>此任务删除后，下游 10 个任务将无法执行。</p>
-        <p>是否继续删除？</p>
-      </div>
-      <div slot="footer">
-        <Button type="primary" size="large" long :loading="modal_loading" @click="del">删除</Button>
-      </div>
-    </Modal>
+    <v-fser :SHOW="logBox2"></v-fser>
+    <v-fpwd :SHOW="Fpwd" @isHide="hdFpwd"></v-fpwd>
   </div>
 </template>
 
@@ -92,15 +103,20 @@
     name: 'app',
     data () {
       return {
+        isLogin: true,
         focus: 0, // 索引图
         autoplaySpeed: 2500,  // 间隔时间
         logBox: false,  // 弹窗
-        logBox2: false,  // 弹窗
+        logBox2: false,  // 弹窗服务咨询
+        Fpwd: false,  // 修改密码
         modal_loading: false,
         sch: ''
       }
     },
     methods: {
+      hdFpwd () {
+        this.Fpwd = false
+      },
       del () {
         this.modal_loading = true
         setTimeout(() => {
@@ -118,7 +134,6 @@
     width: 100%;
     height: auto;
     background-color: #F5F6FA;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
@@ -130,12 +145,24 @@
   .inx-top-l > div:first-child{font-size: 20px; color: #00479D; }
   .inx-top-l > div:nth-child(2){box-sizing: border-box;border-bottom: 4px solid #3A8DFF; }
   .inx-top-r{ -webkit-justify-content:flex-end;justify-content:flex-end;}
-  .inx-top-r > div{min-width: 30px; height: 60px; font-size: 12px; color: #666; line-height: 60px;margin-left: 20px;}
+  .inx-top-r > div{min-width: 30px; height: 60px; font-size: 12px; color: #666; line-height: 60px;margin-left: 20px; cursor: pointer;}
   .inx-top-r .log-btn{ width: 80px; height: 40px; border-radius: 20px; background-color: #3A8DFF; color: #fff; text-align: center; line-height: 40px; font-size: 14px;}
-  .fw-box div{height: 40px; color: #666; line-height: 40px; cursor: pointer;}
+  .fw-box,.user-box{position: absolute; width: 150px; height: auto; top: 8px; left: 0;background-color: #fff;}
+  .fw-box div{height: 40px; color: #666; font-size: 14px; line-height: 40px; cursor: pointer;}
   .fw-box div:hover{background: #3A8DFF; color: #fff; }
+  .im-logo{width: 40px; height: 40px; background: url(https://i.kcimg.cn/data/avatar/noavatar_big.gif-50x50.jpg);border: 1px solid #f5f5f5; border-radius: 50%;background-size: cover; margin-right: 10px;}
+  .logo-box{ height: 60px; div:after{font-size:12px; padding-left: 10px;color: #999;}i{border-right: 1px solid #999;display: block;height: 12px;width: 2px; margin-left: 20px;}}
+  .user-tit{width: 228px;}
+  .user-box{width: 260px; text-align: left; padding:13px 20px 20px;
+    .gre-bt{ color: #2FBB8C; border-color: #2FBB8C; width: 100px; display: block; height: 30px;}
+    .red-bt{color: #FF335D; border-color: #FF335D;width: 100px;display: block;height: 30px;}
+    .us-ft-box{-webkit-justify-content:space-between;justify-content:space-between; margin-top: 10px;}
+  }
+  .user-box > div{height: 28px; line-height: 28px; a{padding-left: 10px;}}
+  .user-box > h3{height: 28px; line-height: 28px; font-size: 14px; color: #333;}
+  .user-box .line{ border-top: 1px solid #ccc; margin-top: 5px; height: 34px; line-height: 34px;padding-top: 3px;}
 
-
+/*----搜索---*/
   .inx-so{  height: 150px; min-width: 1300px; width: 100%; padding-top: 30px;}
   .inx-input{
     width: 800px; height: 50px; border-radius: 30px;box-shadow: 0 2px 8px 0 rgba(27,35,80,0.05); display: block; margin: 0 auto 20px;
@@ -150,13 +177,18 @@
     font-size: 16px; color: #2A2A2A; span{margin-right: 20px;}
     .red{color: red; }
   }
-
+/*----底部版权---*/
   .inx-ft-box{width: 100%; height: 40px; background-color: #333; color: #fff; line-height: 40px; text-align: center;}
-
-  .flt-qq{width: 60px; height: 60px; position: fixed; right: 0;  bottom: 260px;
-    .rt-blue{width: 60px; height: 60px;background-image: linear-gradient(-269deg, #3A8DFF 0%, #6CC1FF 100%); color: #fff;}
-    .lf-qq{ display: none;}
+/*----浮动联系我们---*/
+  .flt-qq{min-width: 60px; height: 60px; position: fixed; right: 0;  bottom: 260px;
+    .rt-blue{width: 60px; height: 60px;background-image: linear-gradient(-269deg, #3A8DFF 0%, #6CC1FF 100%); color: #fff;
+      i{display: block; font-size: 20px; padding-top: 5px;}
+    }
+    .lf-qq{ width: 196px; height: 46px;background-color: #fff;
+      img{width: 20px; height: auto; margin-right: 6px; position: relative; top: 4px;}
+      .txt{color: #666;}
+      div:first-child{font-size: 16px; color: #333;}
+      span{width: 4px; height: 62px; background-color: #3A8DFF; display: block; position: absolute;left: 5px; top: 0;}
+    }
   }
-
-
 </style>

@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'iconfont';
-  src: url('//at.alicdn.com/t/font_nzqj9liryigujtt9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_nzqj9liryigujtt9.ttf') format('truetype');
+  src: url('//at.alicdn.com/t/font_yiu6jvasvh88h0k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_yiu6jvasvh88h0k9.ttf') format('truetype');
 }
 
 .fso{
@@ -14,9 +14,13 @@
 }
 
 .icon-so:before{ content: '\7d22';}
+.icon-dow:after{ content: '\e64c';}
 
 .icon-ai:before{ content: '\5bdf';}
 .icon-mi:before{ content: '\6d4b';}
 .icon-pp:before{ content: '\6398';}
 .icon-xx:before{ content: '\4e89';}
+
+.icon-phone:before{ content: '\8bdd';}
+.icon-qq:before{ content: '\817e';}
 
