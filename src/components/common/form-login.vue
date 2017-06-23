@@ -1,29 +1,52 @@
 <template>
-  <Modal v-model="SHOW" width="440">
-    <p slot="header" style="text-align:center;">填写个人信息，方便我们与您联系</p>
-    
-    <div slot="footer" class="ser-box-ft"><div></div></div>
+  <Modal v-model="isShow" width="440">
+    <p slot="header" style=""></p>
+    <div class="fl-box flex-wrap row-flex">
+      <div class="page" :class="{'active':table===1}" @click="table = 1">登录</div>
+      <div class="page" :class="{'active':table===2}" @click="table = 2">注册</div>
+    </div>
+    <v-vreg v-show="table===2"></v-vreg>
+    <v-vlog v-show="table===1"></v-vlog>
   </Modal>
 </template>
 
 <script>
   export default {
-
+    props: {
+      SHOW: Boolean,
+      T: Number
+    },
+    data () {
+      return {
+        isShow: false,
+        table: 1
+      }
+    },
+    watch: {
+      isShow: 'Hide',
+      SHOW: 'Show',
+      T: 'TP'
+    },
+    methods: {
+      Show () {
+        if (this.SHOW) {
+          this.isShow = true
+        }
+      },
+      TP () {
+        this.table = this.T
+      },
+      Hide () {
+        if (!this.isShow && this.SHOW) {
+          this.$emit('isHide')
+        }
+      }
+    }
   }
 </script>
 
 <style lang="less" scoped>
-.ser-box,.textarea-box{width: 90%;height: 50px; padding-top: 10px;
-  .tet{width: 90px; line-height: 34px; text-align: right; font-size: 14px;}
-}
-.textarea-box{height: auto;}
-.ser-box:last-child{padding-top: 20px;height: auto; .blu-btn{height: 44px; font-size: 16px;}}
-.ser-box-ft{ width: 440px;
-    height: 30px;
-    position: absolute;
-    bottom: 0;
-    background: #fff;
-    left: 0;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;}
+.fl-box{height: 50px; position: absolute; width: 440px; z-index: 66; top: 0; left: 0; background:#fff; border-top-left-radius: 6px; border-top-right-radius: 6px;}
+.fl-box div{text-align: center; line-height: 50px; font-size: 18px; cursor: pointer;}
+.fl-box .active{border-bottom: 3px solid #3A8DFF; color: #3A8DFF;}
 </style>

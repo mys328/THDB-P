@@ -8,7 +8,7 @@
           <Poptip placement="bottom" trigger="hover">
             <div>服务</div>
             <div slot="content" class="fw-box">
-              <div @click="logBox2 = true">市场调研</div>
+              <div @click="Fser = true">市场调研</div>
               <div>用户深度挖掘</div>
               <div>用户行为分析</div>
               <div>舆情监测</div>
@@ -31,8 +31,8 @@
               <div>账号：从西安来</div>
               <div>权限：普通用户</div>
               <h3 class="line">关联账号</h3>
-              <div>电话：32323323<a>修改</a></div>
-              <div>邮箱：343434<a>修改</a></div>
+              <div>电话：32323323<a @click="Ftel = true">修改</a></div>
+              <div>邮箱：343434<a @click="Feml = true">修改</a></div>
               <div class="us-ft-box flex-wrap row-flex">
                 <Button type="ghost" class="gre-bt" @click="Fpwd = true">更改密码</Button>
                 <Button type="ghost" class="red-bt">退出登录</Button>
@@ -41,8 +41,8 @@
           </Poptip>
           <div v-if="isLogin">使用说明</div>
           <div>咨询详情</div>
-          <div v-if="!isLogin">注册</div>
-          <div v-if="!isLogin" class="log-btn" @click="logBox = true">登录</div>
+          <div v-if="!isLogin" @click="LG(2)">注册</div>
+          <div v-if="!isLogin" class="log-btn" @click="LG(1)">登录</div>
         </div>
       </div>
     </div>
@@ -79,22 +79,11 @@
       </Poptip>
     </div>
 
-    <Modal v-model="logBox" width="500">
-   <!--    <p slot="header"></p> -->
-      <p style="color:#f60;text-align:center">
-        <Icon type="information-circled"></Icon>
-        <span>删除确认</span>
-      </p>
-      <div style="text-align:center">
-        <p>此任务删除后，下游 10 个任务将无法执行。</p>
-        <p>是否继续删除？</p>
-      </div>
-      <Button type="error" size="large" long :loading="modal_loading" @click="del">删除</Button>
-      <p slot="footer"></p>
-    </Modal>
-
-    <v-fser :SHOW="logBox2"></v-fser>
+    <v-fser :SHOW="Fser" @isHide="hdFser"></v-fser>
     <v-fpwd :SHOW="Fpwd" @isHide="hdFpwd"></v-fpwd>
+    <v-ftel :SHOW="Ftel" @isHide="hdFtel"></v-ftel>
+    <v-feml :SHOW="Feml" @isHide="hdFeml"></v-feml>
+    <v-flog :SHOW="logBox" :T="TP" @isHide="hdFlog"></v-flog>
   </div>
 </template>
 
@@ -103,13 +92,13 @@
     name: 'app',
     data () {
       return {
-        isLogin: true,
-        focus: 0, // 索引图
-        autoplaySpeed: 2500,  // 间隔时间
+        isLogin: false,
+        TP: 1,
         logBox: false,  // 弹窗
-        logBox2: false,  // 弹窗服务咨询
-        Fpwd: false,  // 修改密码
-        modal_loading: false,
+        Fser: false,  // 弹窗-服务咨询
+        Fpwd: false,  // 弹窗-修改密码
+        Ftel: false,  // 弹窗-修改手机号
+        Feml: false,  // 弹窗-修改邮箱
         sch: ''
       }
     },
@@ -117,13 +106,21 @@
       hdFpwd () {
         this.Fpwd = false
       },
-      del () {
-        this.modal_loading = true
-        setTimeout(() => {
-          this.modal_loading = false
-          this.logBox = false
-          this.$Message.success('删除成功')
-        }, 2000)
+      hdFser () {
+        this.Fser = false
+      },
+      hdFeml () {
+        this.Feml = false
+      },
+      hdFlog () {
+        this.logBox = false
+      },
+      hdFtel () {
+        this.Ftel = false
+      },
+      LG (v) {
+        this.logBox = true
+        this.TP = v
       }
     }
   }
@@ -147,7 +144,7 @@
   .inx-top-r{ -webkit-justify-content:flex-end;justify-content:flex-end;}
   .inx-top-r > div{min-width: 30px; height: 60px; font-size: 12px; color: #666; line-height: 60px;margin-left: 20px; cursor: pointer;}
   .inx-top-r .log-btn{ width: 80px; height: 40px; border-radius: 20px; background-color: #3A8DFF; color: #fff; text-align: center; line-height: 40px; font-size: 14px;}
-  .fw-box,.user-box{position: absolute; width: 150px; height: auto; top: 8px; left: 0;background-color: #fff;}
+  .fw-box,.user-box{position: absolute; width: 120px; height: auto; top: 8px; left: 0;background-color: #fff;}
   .fw-box div{height: 40px; color: #666; font-size: 14px; line-height: 40px; cursor: pointer;}
   .fw-box div:hover{background: #3A8DFF; color: #fff; }
   .im-logo{width: 40px; height: 40px; background: url(https://i.kcimg.cn/data/avatar/noavatar_big.gif-50x50.jpg);border: 1px solid #f5f5f5; border-radius: 50%;background-size: cover; margin-right: 10px;}

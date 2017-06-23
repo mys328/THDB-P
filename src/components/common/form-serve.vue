@@ -1,49 +1,29 @@
 <template>
-  <Modal v-model="SHOW" width="440">
+  <Modal v-model="isShow" width="440">
     <p slot="header" style="text-align:center;">填写个人信息，方便我们与您联系</p>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet">姓名：</div>
-      <div class="page">
-        <Input v-model="DATA.username" size="large" placeholder="请输入姓名"></Input>
-      </div>
-    </div>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet">手机号：</div>
-      <div class="page">
-        <Input v-model="DATA.phone" size="large" placeholder="请输入手机号"></Input>
-      </div>
-    </div>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet">公司名称：</div>
-      <div class="page">
-        <Input v-model="DATA.company" size="large" placeholder="请输入公司名称"></Input>
-      </div>
-    </div>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet">职位名称：</div>
-      <div class="page">
-        <Input v-model="DATA.position" size="large" placeholder="请输入职位名称"></Input>
-      </div>
-    </div>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet">咨询服务：</div>
-      <div class="page">
-        <Input v-model="DATA.service" size="large" placeholder="请选择咨询服务"></Input>
-      </div>
-    </div>
-    <div class="textarea-box flex-wrap row-flex">
-      <div class="tet">咨询详情：</div>
-      <div class="page">
+    <Form ref="formServe" :model="DATA" :rules="ruleCustom" :label-width="100" class="fo-pwd-box">
+      <Form-item label="姓名:" :label-size="14" prop="username">
+        <Input type="text" size="large" v-model="DATA.username" placeholder="请输入姓名" :maxlength="maxlength" number></Input>
+      </Form-item>
+      <Form-item label="手机号:" prop="phone">
+        <Input type="text" size="large" v-model="DATA.phone" placeholder="请输入手机号"></Input>
+      </Form-item>
+      <Form-item label="公司名称:" prop="company">
+        <Input type="text" size="large" v-model="DATA.company" placeholder="请输入公司名称"></Input>
+      </Form-item>
+      <Form-item label="职位名称:" prop="position">
+        <Input type="text" size="large" v-model="DATA.position" placeholder="请输入职位名称"></Input>
+      </Form-item>
+      <Form-item label="咨询服务:" prop="service">
+        <Input type="text" size="large" v-model="DATA.service" placeholder="请选择咨询服务"></Input>
+      </Form-item>
+      <Form-item label="咨询详情" prop="content">
         <Input v-model="DATA.content" type="textarea" :rows="3" placeholder="请输入咨询详情(100字以内)"></Input>
-      </div>
-    </div>
-    <div class="ser-box flex-wrap row-flex">
-      <div class="tet"> </div>
-      <div class="page">
-        <Button type="primary" size="large" long :loading="modal_loading" @click="del" class="blu-btn">提交</Button>
-      </div>
-    </div>
-    <div slot="footer" class="ser-box-ft"><div></div></div>
+      </Form-item>
+      <Form-item>
+        <Button type="primary" size="large" long class="blu-btn" @click="handleSubmit('formServe')">提 交</Button>
+      </Form-item>
+    </Form>
   </Modal>
 </template>
 
@@ -53,8 +33,22 @@
       SHOW: Boolean
     },
     data () {
+      const validateTel = (rule, value, callback) => {
+        if (value === '') {
+          return callback(new Error('请输入手机号'))
+        }
+        if (!Number.isInteger(value)) {
+          return callback(new Error('请输入数字值'))
+        }
+        if (!/^1[3|4|5|7|8]\d{9}$/.test(value)) {
+          return callback(new Error('手机号格式错误'))
+        } else {
+          return callback()
+        }
+      }
       return {
-        modal_loading: false,
+        isShow: false,
+        maxlength: 11,
         DATA: {
           username: '',
           phone: '',
@@ -62,33 +56,48 @@
           position: '',
           service: '',
           content: ''
+        },
+        ruleCustom: {
+          username: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+          phone: [{required: true, validator: validateTel, trigger: 'blur'}],
+          company: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+          position: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+          service: [{required: true, message: '姓名不能为空', trigger: 'blur'}],
+          content: [
+            {type: 'string', max: 5, message: '详情不能多于100字', trigger: 'blur'}
+          ]
         }
       }
     },
+    watch: {
+      isShow: 'Hide',
+      SHOW: 'Show'
+    },
     methods: {
-      del () {
-        this.modal_loading = true
-        setTimeout(() => {
-          this.modal_loading = false
-          this.$Message.success('删除成功')
-        }, 2000)
+      Show () {
+        if (this.SHOW) {
+          this.isShow = true
+        }
+      },
+      Hide () {
+        if (!this.isShow && this.SHOW) {
+          this.$emit('isHide')
+        }
+      },
+      handleSubmit (name) {
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.$Message.success('提交成功!')
+          } else {
+            this.$Message.error('表单验证失败!')
+          }
+        })
       }
     }
   }
 </script>
 
 <style lang="less" scoped>
-.ser-box,.textarea-box{width: 90%;height: 50px; padding-top: 10px;
-  .tet{width: 90px; line-height: 34px; text-align: right; font-size: 14px;}
-}
-.textarea-box{height: auto;}
-.ser-box:last-child{padding-top: 20px;height: auto; .blu-btn{height: 44px; font-size: 16px;}}
-.ser-box-ft{ width: 440px;
-    height: 30px;
-    position: absolute;
-    bottom: 0;
-    background: #fff;
-    left: 0;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;}
+.fo-pwd-box{padding:20px 40px 0 0;}
+.blu-btn{height: 44px; font-size: 16px;}
 </style>

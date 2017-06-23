@@ -6,7 +6,7 @@ import components from '@/components/home'
 import '@/common/css/reset.css'
 import '@/common/css/iconfont.css'
 import '@/common/common.css'
-import 'iview/dist/styles/iview.css'
+import '@/common/css/common.less'
 
 Vue.use(iView)
 

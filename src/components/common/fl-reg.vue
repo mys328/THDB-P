@@ -1,34 +1,28 @@
 <template>
-  <Modal v-model="isShow" width="440">
-    <p slot="header" style="text-align:center;">更改手机号</p>
-    <Form ref="formTels" :model="DATA" :rules="ruleCustom" :label-width="100" class="fo-pwd-box">
-      <Form-item label="新手机号:" :label-size="14" prop="tel">
-        <Input type="text" size="large" v-model="DATA.tel" placeholder="输入新手机号" :maxlength="maxlength" number></Input>
-      </Form-item>
-      <Form-item label="账号密码:" prop="passwd">
-        <Input type="password" size="large" v-model="DATA.passwd" placeholder="输入账号的密码"></Input>
-      </Form-item>
-      <Form-item label="手机验证码:" prop="code">
-        <Input type="text" size="large" v-model="DATA.code" placeholder="输入验证码">
-          <span slot="append">
-            <Button type="ghost" :loading="loadingC" :disabled="disabledC" @click="callCode">
-              <span>{{btnTxt}}</span>
-            </Button>
-          </span>
-        </Input>
-      </Form-item>
-      <Form-item>
-        <Button type="primary" size="large" long class="blu-btn" @click="handleSubmit('formTels')">提 交</Button>
-      </Form-item>
-    </Form>
-  </Modal>
+  <Form ref="formCustom" :model="DATA" :rules="ruleCustom" :label-width="100" class="fo-pwd-box">
+    <Form-item label="用户名:" :label-size="14" prop="tel">
+      <Input type="text" size="large" v-model="DATA.tel" placeholder="输入用户名" :maxlength="maxlength" number></Input>
+    </Form-item>
+    <Form-item label="密码:" prop="passwd">
+      <Input type="password" size="large" v-model="DATA.passwd" placeholder="输入密码"></Input>
+    </Form-item>
+    <Form-item label="手机验证码:" prop="code">
+      <Input type="text" size="large" v-model="DATA.code" placeholder="输入验证码">
+        <span slot="append">
+          <Button type="ghost" :loading="loadingC" :disabled="disabledC" @click="callCode">
+            <span>{{btnTxt}}</span>
+          </Button>
+        </span>
+      </Input>
+    </Form-item>
+    <Form-item>
+      <Button type="primary" size="large" long class="blu-btn" @click="handleSubmit('formCustom')">注 册</Button>
+    </Form-item>
+  </Form>
 </template>
 
 <script>
   export default {
-    props: {
-      SHOW: Boolean
-    },
     data () {
       const validateTel = (rule, value, callback) => {
         if (value === '') {
@@ -67,7 +61,6 @@
         callback()
       }
       return {
-        isShow: false,
         maxlength: 11,
         loadingC: false,
         disabledC: false,
@@ -77,7 +70,8 @@
         DATA: {
           passwd: '',
           tel: '',
-          code: ''
+          code: '',
+          passwdCheck: ''
         },
         ruleCustom: {
           tel: [{validator: validateTel, trigger: 'blur'}],
@@ -86,21 +80,7 @@
         }
       }
     },
-    watch: {
-      isShow: 'Hide',
-      SHOW: 'Show'
-    },
     methods: {
-      Show () {
-        if (this.SHOW) {
-          this.isShow = true
-        }
-      },
-      Hide () {
-        if (!this.isShow && this.SHOW) {
-          this.$emit('isHide')
-        }
-      },
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
