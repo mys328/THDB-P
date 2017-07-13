@@ -5,8 +5,8 @@
       <div class="page" :class="{'active':table===1}" @click="table = 1">登录</div>
       <div class="page" :class="{'active':table===2}" @click="table = 2">注册</div>
     </div>
-    <v-vreg v-show="table===2"></v-vreg>
-    <v-vlog v-show="table===1"></v-vlog>
+    <v-vreg v-show="table===2" @SHOW="chengHed"></v-vreg>
+    <v-vlog v-show="table===1" @SHOW="chengHed"></v-vlog>
   </Modal>
 </template>
 
@@ -28,6 +28,9 @@
       T: 'TP'
     },
     methods: {
+      chengHed () {
+        this.isShow = false
+      },
       Show () {
         if (this.SHOW) {
           this.isShow = true
