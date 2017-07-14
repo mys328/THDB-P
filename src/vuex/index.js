@@ -3,16 +3,22 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    isLogin: false,     // 是否是牛人
-    isQz: false,     // 是否是圈主
-    hotList: false,     // 推荐关注
-    titles: ''
+    isLogin: true, // 是否登录
+    TP: 1,        // 注册or登录
+    logBox: false,  // 弹窗-注册登录
+    Fser: false,  // 弹窗-服务咨询
+    Fpwd: false,  // 弹窗-修改密码
+    Ftel: false,  // 弹窗-修改手机号
+    Feml: false  // 弹窗-修改邮箱
   },
   mutations: {
-    setTitle (state, b) { state.titles = b },
-    isCkAuth (state, v) { state.isLogin = v },
-    setQz (state, v) { state.isQz = v },
-    setHotList (state, v) { state.hotList = v }
+    setLogin (state, v) { state.isLogin = v },
+    setTP (state, v) { state.TP = v },
+    setLogBox (state, v) { state.logBox = v },
+    setFS (state, v) { state.Fser = v },
+    setFP (state, v) { state.Fpwd = v },
+    setFT (state, v) { state.Ftel = v },
+    setFE (state, v) { state.Feml = v }
   },
   actions: {
     // SetAther (context, b) {

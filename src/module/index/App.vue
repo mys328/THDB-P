@@ -8,7 +8,7 @@
           <Poptip placement="bottom" trigger="hover">
             <div>服务</div>
             <div slot="content" class="fw-box">
-              <div @click="Fser = true">市场调研</div>
+              <div @click="$store.commit('setFS', true)">市场调研</div>
               <div>用户深度挖掘</div>
               <div>用户行为分析</div>
               <div>舆情监测</div>
@@ -31,10 +31,10 @@
               <div>账号：从西安来</div>
               <div>权限：普通用户</div>
               <h3 class="line">关联账号</h3>
-              <div>电话：32323323<a @click="Ftel = true">修改</a></div>
-              <div>邮箱：343434<a @click="Feml = true">修改</a></div>
+              <div>电话：32323323<a @click="$store.commit('setFT', true)">修改</a></div>
+              <div>邮箱：343434<a @click="$store.commit('setFE', true)">修改</a></div>
               <div class="us-ft-box flex-wrap row-flex">
-                <Button type="ghost" class="gre-bt" @click="Fpwd = true">更改密码</Button>
+                <Button type="ghost" class="gre-bt" @click="$store.commit('setFP', true)">更改密码</Button>
                 <Button type="ghost" class="red-bt">退出登录</Button>
               </div>
             </div>
@@ -79,11 +79,11 @@
       </Poptip>
     </div>
 
-    <v-fser :SHOW="Fser" @isHide="hdFser"></v-fser>
-    <v-fpwd :SHOW="Fpwd" @isHide="hdFpwd"></v-fpwd>
-    <v-ftel :SHOW="Ftel" @isHide="hdFtel"></v-ftel>
-    <v-feml :SHOW="Feml" @isHide="hdFeml"></v-feml>
-    <v-flog :SHOW="logBox" :T="TP" @isHide="hdFlog"></v-flog>
+    <v-fser></v-fser>
+    <v-fpwd></v-fpwd>
+    <v-ftel></v-ftel>
+    <v-feml></v-feml>
+    <v-flog></v-flog>
   </div>
 </template>
 
@@ -92,35 +92,37 @@
     name: 'app',
     data () {
       return {
-        isLogin: false,
-        TP: 1,
-        logBox: false,  // 弹窗
-        Fser: false,  // 弹窗-服务咨询
-        Fpwd: false,  // 弹窗-修改密码
-        Ftel: false,  // 弹窗-修改手机号
-        Feml: false,  // 弹窗-修改邮箱
         sch: ''
       }
     },
+    computed: {
+      isLogin () { return this.$store.state.isLogin },
+      TP () { return this.$store.state.TP },
+      logBox () { return this.$store.state.logBox },
+      Fser () { return this.$store.state.Fser },
+      Fpwd () { return this.$store.state.Fpwd },
+      Ftel () { return this.$store.state.Ftel },
+      Feml () { return this.$store.state.Feml }
+    },
     methods: {
       hdFpwd () {
-        this.Fpwd = false
+        this.$store.commit('setFP', false)
       },
       hdFser () {
-        this.Fser = false
+        this.$store.commit('setFS', false)
       },
       hdFeml () {
-        this.Feml = false
+        this.$store.commit('setFE', false)
       },
       hdFlog () {
-        this.logBox = false
+        this.$store.commit('setLogBox', false)
       },
       hdFtel () {
-        this.Ftel = false
+        this.$store.commit('setFT', false)
       },
       LG (v) {
-        this.logBox = true
-        this.TP = v
+        this.$store.commit('setLogBox', true)
+        this.$store.commit('setTP', v)
       }
     }
   }

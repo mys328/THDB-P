@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import iView from 'iview'
 import App from './App'
+import store from '@/vuex'
 import components from '@/components/home'
 
 import '@/common/css/reset.css'
@@ -18,6 +19,7 @@ Object.keys(components).forEach((key) => {
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   template: '<App/>',
   components: { App }
 })

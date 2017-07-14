@@ -29,8 +29,8 @@
 
 <script>
   export default {
-    props: {
-      SHOW: Boolean
+    computed: {
+      Fpwd () { return this.$store.state.Fpwd }
     },
     data () {
       const validateTel = (rule, value, callback) => {
@@ -102,17 +102,17 @@
     },
     watch: {
       isShow: 'Hide',
-      SHOW: 'Show'
+      Fpwd: 'Show'
     },
     methods: {
       Show () {
-        if (this.SHOW) {
+        if (this.Fpwd) {
           this.isShow = true
         }
       },
       Hide () {
-        if (!this.isShow && this.SHOW) {
-          this.$emit('isHide')
+        if (!this.isShow && this.Fpwd) {
+          this.$store.commit('setFP', false)
         }
       },
       handleSubmit (name) {

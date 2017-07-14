@@ -2,46 +2,40 @@
   <Modal v-model="isShow" width="440">
     <p slot="header" style=""></p>
     <div class="fl-box flex-wrap row-flex">
-      <div class="page" :class="{'active':table===1}" @click="table = 1">登录</div>
-      <div class="page" :class="{'active':table===2}" @click="table = 2">注册</div>
+      <div class="page" :class="{'active':TP===1}" @click="$store.commit('setTP', 1)">登录</div>
+      <div class="page" :class="{'active':TP===2}" @click="$store.commit('setTP', 2)">注册</div>
     </div>
-    <v-vreg v-show="table===2" @SHOW="chengHed"></v-vreg>
-    <v-vlog v-show="table===1" @SHOW="chengHed"></v-vlog>
+    <v-vreg v-show="TP===2"></v-vreg>
+    <v-vlog v-show="TP===1"></v-vlog>
   </Modal>
 </template>
 
 <script>
   export default {
-    props: {
-      SHOW: Boolean,
-      T: Number
+    computed: {
+      TP () { return this.$store.state.TP },
+      logBox () { return this.$store.state.logBox }
     },
     data () {
       return {
-        isShow: false,
-        table: 1
+        isShow: false
       }
     },
     watch: {
       isShow: 'Hide',
-      SHOW: 'Show',
-      T: 'TP'
+      logBox: 'Show'
     },
     methods: {
-      chengHed () {
-        this.isShow = false
-      },
       Show () {
-        if (this.SHOW) {
+        if (this.logBox) {
           this.isShow = true
+        } else {
+          this.isShow = false
         }
       },
-      TP () {
-        this.table = this.T
-      },
       Hide () {
-        if (!this.isShow && this.SHOW) {
-          this.$emit('isHide')
+        if (!this.isShow && this.logBox) {
+          this.$store.commit('setLogBox', false)
         }
       }
     }

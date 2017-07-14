@@ -3,23 +3,23 @@
     <Form-item label="用户名:" :label-size="14" prop="username">
       <Input type="text" size="large" v-model="DATA.username" placeholder="输入用户名" :maxlength="maxlength"></Input>
     </Form-item>
-    <Form-item label="密码:" prop="passwd">
+    <Form-item label="密码:" prop="password">
       <Input type="password" size="large" v-model="DATA.password" placeholder="输入密码">
         <Checkbox slot="append" v-model="fing" style="margin:0 4px;">记住密码</Checkbox>
       </Input>
     </Form-item>
-    <Form-item label="验证码:" prop="code">
+    <Form-item label="验证码:" prop="domain">
       <Row>
         <Col span="16">
           <Input type="text" size="large" v-model="DATA.domain" placeholder="输入验证码"></Input>
         </Col>
         <Col span="8" style="height:36px;">
-          <img :src="img" alt="验证码" class="y-img"/>
+          <img :src="img" alt="验证码" class="y-img" @click="getImg"/>
         </Col>
       </Row>
     </Form-item>
     <Form-item style="margin-bottom:10px;">
-      <Button type="primary" size="large" long class="blu-btn" @click="handleSubmit('formCustom')">登 录</Button>
+      <Button type="primary" size="large" :loading="loadingC" long class="blu-btn" @click="handleSubmit('formCustom')">登 录</Button>
     </Form-item>
     <Form-item>
       <p style="text-align:right;">忘记密码？</p>
@@ -34,6 +34,9 @@
       const validateName = (rule, value, callback) => {
         if (value === '') {
           return callback(new Error('请输入用户名'))
+        }
+        if (!/^[A-Za-z0-9_\u4e00-\u9fa5]{3,16}$/.test(value)) {
+          return callback(new Error('用户名不规范'))
         }
         callback()
       }
@@ -70,8 +73,8 @@
         },
         ruleCustom: {
           username: [{validator: validateName, trigger: 'blur'}],
-          passwd: [{validator: validatePass, trigger: 'blur'}],
-          code: [{validator: validateCode, trigger: 'blur'}]
+          password: [{validator: validatePass, trigger: 'blur'}],
+          domain: [{validator: validateCode, trigger: 'blur'}]
         }
       }
     },
@@ -81,15 +84,28 @@
     methods: {
       getImg () {
         XHR.VerFcode().then((res) => {
-          if (res.data.status === 0) {
-            this.img = res.data.data
-          }
+          this.img = res.data.url
         })
       },
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
-            this.$Message.success('提交成功!')
+            this.loadingC = true
+            XHR.Login(this.DATA).then((res) => {
+              if (res.data.status === 0) {
+                this.loadingC = false
+                this.$store.commit('setLogBox', false)
+                this.$Notice.success({
+                  title: res.data.msg,
+                  desc: ''
+                })
+              } else {
+                this.$Notice.error({
+                  title: res.data.msg,
+                  desc: ''
+                })
+              }
+            })
           } else {
             this.$Message.error('表单验证失败!')
           }

@@ -57,9 +57,12 @@ class XHR {
   }
   // 返回登陆验证码
   VerFcode () {
-    return axios.get(`${HTTPS}login/verification-code`)
+    return axios.get(`${HTTPS}login/captcha?v=null&refresh=true`)
   }
-  // 发送手机验证码
+  // 返回服务配置
+  Servi () {
+    return axios.get(`${HTTPS}login/service`)
+  }
   // 发送手机验证码
   // 发送手机验证码
 

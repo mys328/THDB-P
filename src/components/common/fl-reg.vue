@@ -18,7 +18,7 @@
       <Input type="text" size="large" v-model="DATA.phone" placeholder="输入绑定手机号" :maxlength="maxlength" number></Input>
     </Form-item>
     <Form-item label="验证码:" prop="code">
-      <Input type="text" size="large" v-model="DATA.code" placeholder="输入验证码">
+      <Input type="text" size="large" v-model="DATA.code" placeholder="输入验证码" :maxlength="maxCode">
         <span slot="append">
           <Button type="ghost" :loading="loadingC" :disabled="disabledC" @click="callCode">
             <span>{{btnTxt}}</span>
@@ -27,13 +27,14 @@
       </Input>
     </Form-item>
     <Form-item label="邮箱:" :label-size="14" prop="email">
-      <Input type="text" size="large" v-model="DATA.email" placeholder="输入绑定邮箱" :maxlength="maxlength" number></Input>
+      <Input type="text" size="large" v-model="DATA.email" placeholder="输入绑定邮箱"></Input>
     </Form-item>
     <Form-item style="margin-bottom: 10px;">
-      <Checkbox v-model="is_ok" style="margin:0 4px;">我已阅读《xxx》</Checkbox>
+      <Checkbox v-model="is_ok" style="margin:0 4px;">我已阅读</Checkbox>
+      <a href="serve.html" target="_blank">《服务协议》</a>
     </Form-item>
     <Form-item>
-      <Button type="primary" :loading="loadingG" size="large" long class="blu-btn" @click="handleSubmit('formCustom')">注 册</Button>
+      <Button type="primary" :loading="loadingG" size="large" long class="blu-btn" @click="handleSubmit('formCustom')" :disabled="disabledG">注 册</Button>
     </Form-item>
   </Form>
 </template>
@@ -51,15 +52,36 @@
         }
         if (!/^1[3|4|5|7|8]\d{9}$/.test(value)) {
           return callback(new Error('手机号格式错误'))
+        }
+        XHR.OnlyPhone({phone: value}).then((res) => {
+          if (res.data.status !== 0) {
+            return callback(new Error(res.data.msg))
+          } else {
+            callback()
+          }
+        })
+      }
+      const validateName = (rule, value, callback) => {
+        if (value === '') {
+          return callback(new Error('请输入用户名'))
         } else {
-          return callback()
+          if (!/^[A-Za-z0-9_\u4e00-\u9fa5]{3,16}$/.test(value)) {
+            return callback(new Error('用户名不规范'))
+          }
+          XHR.OnlyUser({username: value}).then((res) => {
+            if (res.data.status !== 0) {
+              return callback(new Error(res.data.msg))
+            } else {
+              callback()
+            }
+          })
         }
       }
       const validatePass = (rule, value, callback) => {
         if (value === '') {
           return callback(new Error('请输入密码'))
         } else {
-          if (this.DATA.password.length < 6) {
+          if (value.length < 6) {
             return callback(new Error('密码不能少于6位'))
           } else {
             callback()
@@ -70,28 +92,45 @@
         if (value === '') {
           return callback(new Error('请再次输入密码'))
         }
-        console.log(rule, value, this.DATA.password, '1233232323')
         if (value !== this.DATA.password) {
           return callback(new Error('两次输入密码不一致!'))
         } else {
           callback()
         }
       }
+      const validateEml = (rule, value, callback) => {
+        XHR.OnlyEmail({email: value}).then((res) => {
+          if (res.data.status !== 0) {
+            return callback(new Error(res.data.msg))
+          } else {
+            callback()
+          }
+        })
+      }
       const validateCode = (rule, value, callback) => {
         if (value === '') {
           return callback(new Error('验证码不能为空'))
         }
-        if (this.DATA.code.length < 6) {
-          return callback(new Error('验证码必需6位字符'))
+        if (value.length < 4) {
+          return callback(new Error('验证码必需4位字符'))
         }
-        callback()
+        XHR.VerCode({phone: this.DATA.phone, code: value})
+        .then((res) => {
+          if (res.data.status !== 0) {
+            return callback(new Error(res.data.msg))
+          } else {
+            callback()
+          }
+        })
       }
       return {
         maxlength: 11,
+        maxCode: 4,
         loadingG: false,
+        disabledG: false,
         loadingC: false,
         disabledC: false,
-        is_ok: false,
+        is_ok: true,
         comTim: 60,
         btnTxt: '发送验证码', // '发送验证码', '发送中…', '60秒后重发', '重发验证码'
         loadingS: false,
@@ -102,22 +141,33 @@
           phone: '',
           email: '',
           code: '',
-          is_ok: ''
+          is_ok: 1
         },
         ruleCustom: {
-          username: [{required: true, message: '请填写用户名', trigger: 'blur'}],
+          username: [{required: true, validator: validateName, trigger: 'blur'}],
           password: [{required: true, validator: validatePass, trigger: 'blur'}],
           re_pass: [{required: true, validator: validateOkPass, trigger: 'blur'}],
           phone: [{required: true, validator: validateTel, trigger: 'blur'}],
           email: [
             {required: true, message: '邮箱不能为空', trigger: 'blur'},
-            {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+            {type: 'email', message: '邮箱格式不正确', trigger: 'blur'},
+            {validator: validateEml, trigger: 'blur'}
           ],
           code: [{required: true, validator: validateCode, trigger: 'blur'}]
         }
       }
     },
+    watch: {
+      is_ok: 'isGo'
+    },
     methods: {
+      isGo () {
+        if (this.is_ok) {
+          this.disabledG = false
+        } else {
+          this.disabledG = true
+        }
+      },
       handleSubmit (name) {
         this.$refs[name].validate((valid) => {
           if (valid) {
@@ -125,13 +175,13 @@
             XHR.Regs(this.DATA).then((res) => {
               if (res.data.status === 0) {
                 this.loadingG = false
-                this.$emit('SHOW')
+                this.$store.commit('setLogBox', false)
                 this.$Notice.success({
                   title: res.data.msg,
                   desc: ''
                 })
               } else {
-                this.$Notice.success({
+                this.$Notice.error({
                   title: res.data.msg,
                   desc: ''
                 })
@@ -160,19 +210,26 @@
         }
       },
       callCode () {
-        if (this.DATA.code.length === 6) {
+        if (/^1[3|4|5|7|8]\d{9}$/.test(this.DATA.phone)) {
           this.loadingC = true
           this.btnTxt = '发送中…' // '60秒后重发', '重发验证码'
-          setTimeout(() => {
-            this.disabledC = true
-            this.loadingC = false
-            this.$Message.success('发送成功!')
-            this.btnTxt = '60秒后重发'
-            this.comDow()
-          }, 3000)
+          XHR.SendPC({phone: this.DATA.phone})
+          .then((res) => {
+            if (res.data.status === 0) {
+              this.disabledC = true
+              this.loadingC = false
+              this.$Message.success('发送成功!')
+              this.btnTxt = '60秒后重发'
+              this.comDow()
+            } else {
+              this.loadingC = false
+              this.$Message.success(res.data.msg)
+            }
+          })
+        } else {
+          this.$Message.warning('请输入正确手机号')
         }
       }
-
     }
   }
 </script>
