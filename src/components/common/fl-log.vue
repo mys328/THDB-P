@@ -94,7 +94,11 @@
             XHR.Login(this.DATA).then((res) => {
               if (res.data.status === 0) {
                 this.loadingC = false
+                // this.$store.commit('setUserInfo', res.data.data)
+                let txt = JSON.stringify(res.data.data)
+                localStorage.setItem('USERINFO', txt)
                 this.$store.commit('setLogBox', false)
+                this.$store.commit('setLogin', true)
                 this.$Notice.success({
                   title: res.data.msg,
                   desc: ''

@@ -63,7 +63,19 @@ class XHR {
   Servi () {
     return axios.get(`${HTTPS}login/service`)
   }
-  // 发送手机验证码
+
+  // 热门标签
+  Labels () {
+    return axios.get(`${HTTPS}business-ppt/label`)
+  }
+  // 搜索热词
+  keyWord () {
+    return axios.get(`${HTTPS}business-ppt/show-keyword`)
+  }
+  // 最热报告
+  ShowHot () {
+    return axios.get(`${HTTPS}business-ppt/show-hot`)
+  }
   // 发送手机验证码
 
   isErr (res, self) {

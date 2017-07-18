@@ -21,21 +21,21 @@
 
           <Poptip v-if="isLogin" placement="bottom" trigger="hover">
             <div class="logo-box flex-wrap row-flex midCenter">
-              <img src="https://i.kcimg.cn/data/avatar/noavatar_big.gif-50x50.jpg" class="im-logo" />
+              <img :src="userInfo.user_img" class="im-logo" />
               <div class="fso icon-dow">我是用户Y</div>
               <i></i>
             </div>
             <div slot="title" class="user-tit"></div>
             <div slot="content" class="user-box">
               <h3>账号信息</h3>
-              <div>账号：从西安来</div>
-              <div>权限：普通用户</div>
+              <div>账号：{{userInfo.user_name}}</div>
+              <div>权限：{{userInfo.role_name}}</div>
               <h3 class="line">关联账号</h3>
-              <div>电话：32323323<a @click="$store.commit('setFT', true)">修改</a></div>
-              <div>邮箱：343434<a @click="$store.commit('setFE', true)">修改</a></div>
+              <div>电话：{{userInfo.user_phone}}<a @click="$store.commit('setFT', true)">修改</a></div>
+              <div>邮箱：{{userInfo.user_email}}<a @click="$store.commit('setFE', true)">修改</a></div>
               <div class="us-ft-box flex-wrap row-flex">
                 <Button type="ghost" class="gre-bt" @click="$store.commit('setFP', true)">更改密码</Button>
-                <Button type="ghost" class="red-bt">退出登录</Button>
+                <Button type="ghost" class="red-bt" @click="$store.dispatch('loginOut')">退出登录</Button>
               </div>
             </div>
           </Poptip>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <v-banner></v-banner>
+    <v-banner v-if="!isSearch"></v-banner>
 
     <div class="inx-so">
       <div class="inx-input"> <!-- inx-in-active -->
@@ -56,15 +56,14 @@
       </div>
       <div class="hot-txt">
         <span>搜索热词：</span>
-        <span class="red">卡车</span>
-        <span>整车</span>
-        <span>配件</span>
-        <span>发动机</span>
-        <span>销售</span>
+        <span v-for="(em, index) in LAB" :key="index" :class="{'red': index == 0}">{{em.keyword}}</span>
       </div>
     </div>
-
-    <v-auto></v-auto>
+    <div v-if="isSearch" class="u-mr-box">
+      <v-items></v-items>
+      <v-rhot></v-rhot>
+    </div>
+    <v-auto v-if="!isSearch"></v-auto>
 
     <div class="inx-ft-box">Copyright ©2009~2017 www.360che.com All Rights Reserved. 卡车之家 版权所有 社会信用代码：911101056787733227</div>
 
@@ -88,41 +87,49 @@
 </template>
 
 <script>
+  import XHR from '@/api'
   export default {
     name: 'app',
     data () {
       return {
-        sch: ''
+        sch: '',
+        isSearch: true,
+        userInfo: {},
+        LAB: []
       }
     },
     computed: {
-      isLogin () { return this.$store.state.isLogin },
-      TP () { return this.$store.state.TP },
-      logBox () { return this.$store.state.logBox },
-      Fser () { return this.$store.state.Fser },
-      Fpwd () { return this.$store.state.Fpwd },
-      Ftel () { return this.$store.state.Ftel },
-      Feml () { return this.$store.state.Feml }
+      // userInfo () { return this.$store.state.userInfo },
+      isLogin () { return this.$store.state.isLogin }
+    },
+    created () {
+      this.getLabel()
+      if (this.getCookie('userId') !== '') {
+        this.$store.commit('setLogin', true)
+        this.userInfo = JSON.parse(localStorage.getItem('USERINFO'))
+      }
+    },
+    watch: {
+      isLogin: 'readMsg'
+    },
+    mounted () {
     },
     methods: {
-      hdFpwd () {
-        this.$store.commit('setFP', false)
-      },
-      hdFser () {
-        this.$store.commit('setFS', false)
-      },
-      hdFeml () {
-        this.$store.commit('setFE', false)
-      },
-      hdFlog () {
-        this.$store.commit('setLogBox', false)
-      },
-      hdFtel () {
-        this.$store.commit('setFT', false)
+      readMsg () {
+        if (this.isLogin) {
+          this.userInfo = JSON.parse(localStorage.getItem('USERINFO'))
+        }
       },
       LG (v) {
         this.$store.commit('setLogBox', true)
         this.$store.commit('setTP', v)
+      },
+      getLabel () {
+        XHR.keyWord().then((res) => {
+          if (res.data.status === 0) {
+            this.LAB = res.data.data
+          }
+        })
       }
     }
   }
@@ -135,7 +142,6 @@
     background-color: #F5F6FA;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
   }
   .inx-box-top{width: 100%; height: 60px;box-shadow: 0 1px 3px 0 rgba(0,0,0,0.10); background-color: #fff;}
@@ -147,8 +153,9 @@
   .inx-top-r > div{min-width: 30px; height: 60px; font-size: 12px; color: #666; line-height: 60px;margin-left: 20px; cursor: pointer;}
   .inx-top-r .log-btn{ width: 80px; height: 40px; border-radius: 20px; background-color: #3A8DFF; color: #fff; text-align: center; line-height: 40px; font-size: 14px;}
   .fw-box,.user-box{position: absolute; width: 120px; height: auto; top: 8px; left: 0;background-color: #fff;}
-  .fw-box div{height: 40px; color: #666; font-size: 14px; line-height: 40px; cursor: pointer;}
+  .fw-box div{height: 40px; color: #666; font-size: 14px; line-height: 40px; cursor: pointer;text-align: center;}
   .fw-box div:hover{background: #3A8DFF; color: #fff; }
+  
   .im-logo{width: 40px; height: 40px; background: url(https://i.kcimg.cn/data/avatar/noavatar_big.gif-50x50.jpg);border: 1px solid #f5f5f5; border-radius: 50%;background-size: cover; margin-right: 10px;}
   .logo-box{ height: 60px; div:after{font-size:12px; padding-left: 10px;color: #999;}i{border-right: 1px solid #999;display: block;height: 12px;width: 2px; margin-left: 20px;}}
   .user-tit{width: 228px;}
@@ -173,6 +180,7 @@
   .inx-in-active{border-color: #57a3f3;}
   
   .hot-txt{
+    text-align: center;
     font-size: 16px; color: #2A2A2A; span{margin-right: 20px;}
     .red{color: red; }
   }
@@ -180,14 +188,27 @@
   .inx-ft-box{width: 100%; height: 40px; background-color: #333; color: #fff; line-height: 40px; text-align: center;}
 /*----浮动联系我们---*/
   .flt-qq{min-width: 60px; height: 60px; position: fixed; right: 0;  bottom: 260px;
-    .rt-blue{width: 60px; height: 60px;background-image: linear-gradient(-269deg, #3A8DFF 0%, #6CC1FF 100%); color: #fff;
+    .rt-blue{width: 60px; height: 60px;background-image: linear-gradient(-269deg, #3A8DFF 0%, #6CC1FF 100%); color: #fff;text-align: center;
       i{display: block; font-size: 20px; padding-top: 5px;}
     }
     .lf-qq{ width: 196px; height: 46px;background-color: #fff;
+      text-align: center;
       img{width: 20px; height: auto; margin-right: 6px; position: relative; top: 4px;}
       .txt{color: #666;}
       div:first-child{font-size: 16px; color: #333;}
       span{width: 4px; height: 62px; background-color: #3A8DFF; display: block; position: absolute;left: 5px; top: 0;}
     }
   }
+/*--搜索结果---*/
+.u-mr-box{padding: 0 0 20px; width:1300px; margin:0 auto; }
+.u-mr-box:after{
+  content: '';
+  clear: both;
+  display: block;
+  visibility: hidden;
+  font-size: 0;
+  height: 2px;
+  width: 100%;
+}
+.left-i-box{width: 980px;}
 </style>

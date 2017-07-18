@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .inx-ad-box{width: 100%; background-color: #09203D; height: 540px;
+  .inx-ad-box{width: 100%; background-color: #09203D; height: 540px;text-align: center;
     img{width: 1300px; height: 540px;}
   }
 </style>

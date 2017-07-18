@@ -2,6 +2,7 @@ import Vue from 'vue'
 import iView from 'iview'
 import App from './App'
 import store from '@/vuex'
+import mixins from '@/mixins'
 import components from '@/components/home'
 
 import '@/common/css/reset.css'
@@ -10,6 +11,7 @@ import '@/common/common.css'
 import '@/common/css/common.less'
 
 Vue.use(iView)
+Vue.mixin(mixins)
 
 Object.keys(components).forEach((key) => {
   var name = key.replace(/(\w)/, (v) => v.toUpperCase())

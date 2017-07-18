@@ -8,6 +8,10 @@ import flog from './common/form-login'
 import vreg from './common/fl-reg'
 import vlog from './common/fl-log'
 
+import usch from './common/u-search'
+import rhot from './common/r-hot'
+import items from './common/l-item'
+
 export default {
   banner,
   auto,
@@ -17,5 +21,8 @@ export default {
   feml,
   vreg,
   vlog,
-  flog
+  flog,
+  usch,
+  rhot,
+  items
 }

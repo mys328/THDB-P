@@ -86,6 +86,7 @@
                   title: res.data.msg,
                   desc: ''
                 })
+                this.handleReset('formEmil')
               } else {
                 this.$Notice.error({
                   title: res.data.msg,

@@ -1,7 +1,13 @@
 import Vue from 'vue'
-import iView from 'iview'
-import VueRouter from 'vue-router'
-import axios from 'axios'
-import Vuex from 'vuex'
-import echarts from 'echarts'
-import qs from 'qs'
+import Router from 'vue-router'
+
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      component: resolve => require(['@/components/detail/home.vue'], resolve)
+    }
+  ]
+})

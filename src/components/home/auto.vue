@@ -29,7 +29,7 @@
 
 <style lang="less" scoped>
   .ico-x-box{ width: 100%; height: 170px; background-color: #fff;}
-  .ico-tp-box{ width: 1300px; margin:0 auto; height: 170px; padding: 40px 0;
+  .ico-tp-box{ width: 1300px; margin:0 auto; height: 170px; padding: 40px 0;text-align: center;
     div{ border-left: 1px solid #DFE3EB;}
     i{font-size: 42px; }
     p{margin-top: 10px;}
