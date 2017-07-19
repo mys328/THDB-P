@@ -13,11 +13,13 @@
 
     <div class="hot-title rhs">热门标签</div>
     <div class="span-hot">
-      <span v-for="(em, index) in LAB" :key="index">{{em.name}}</span>
+      <span
+      v-for="(em, index) in LAB"
+      :key="index"
+      @click="hotSearch(index)">{{em.name}}</span>
     </div>
   </div>
 </template>
-
 <script>
   import XHR from '@/api'
   export default {
@@ -45,6 +47,13 @@
             this.HOT = res.data.data
           }
         })
+      },
+      hotSearch (inx) {
+        let json = {}
+        json.id = this.LAB[inx].id
+        this.$emit('inputData', this.LAB[inx].name)
+        this.$store.commit('setSHjson', json)
+        this.$store.dispatch('searchGo', json)
       }
     }
   }

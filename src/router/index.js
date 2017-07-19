@@ -8,6 +8,10 @@ export default new Router({
     {
       path: '/',
       component: resolve => require(['@/components/detail/home.vue'], resolve)
+    },
+    {
+      path: '/imsg',
+      component: resolve => require(['@/components/detail/imsg.vue'], resolve)
     }
   ]
 })

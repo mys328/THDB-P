@@ -51,17 +51,20 @@
 
     <div class="inx-so">
       <div class="inx-input"> <!-- inx-in-active -->
-        <i class="inx-icon fso icon-so"></i>
+        <i class="inx-icon fso icon-so" @click="goSearch"></i>
         <input type="text" placeholder="搜索..." v-model="sch" class="inputs">
       </div>
       <div class="hot-txt">
         <span>搜索热词：</span>
-        <span v-for="(em, index) in LAB" :key="index" :class="{'red': index == 0}">{{em.keyword}}</span>
+        <span v-for="(em, index) in LAB"
+        :key="index"
+        :class="{'red': index == 0}"
+        @click="hotSearch(em.keyword)">{{em.keyword}}</span>
       </div>
     </div>
     <div v-if="isSearch" class="u-mr-box">
       <v-items></v-items>
-      <v-rhot></v-rhot>
+      <v-rhot @inputData="inputs"></v-rhot>
     </div>
     <v-auto v-if="!isSearch"></v-auto>
 
@@ -93,7 +96,7 @@
     data () {
       return {
         sch: '',
-        isSearch: true,
+        isSearch: false,
         userInfo: {},
         LAB: []
       }
@@ -130,6 +133,29 @@
             this.LAB = res.data.data
           }
         })
+      },
+      goSearch () {
+        if (this.sch.replace(/^\s*$/g, '') !== '') {
+          let json = {}
+          json.name = this.sch
+          this.isSearch = true
+          this.$store.commit('setSHjson', json)
+          this.$store.dispatch('searchGo', json)
+        } else {
+          this.$Message.warning('请输入搜索内容！')
+        }
+      },
+      hotSearch (name) {
+        let json = {}
+        json.name = name
+        this.sch = name
+        this.isSearch = true
+        this.$store.commit('setSHjson', json)
+        this.$store.dispatch('searchGo', json)
+      },
+      inputs (txt) {
+        this.sch = txt
+        this.isSearch = true
       }
     }
   }
@@ -175,12 +201,13 @@
     background-color: #fff; position: relative; border:1px solid #fff;
     .inx-icon{height: 48px; line-height: 48px; position: absolute; top: 0; right: 6px;display: block; width: 50px;}
     .inx-icon:before{font-size: 23px; color: #3A8DFF;}
-    .inputs{ border:0; width: 740px; height: 48px; padding: 4px 7px; outline: 0; text-align: center; font-size: 18px;color: #333; line-height: 48px;}
+    .inputs{ border:0; width: 740px; height: 48px; padding: 4px 7px; outline: 0; text-align: center; font-size: 18px;color: #333; line-height: 48px;    background-color: transparent;}
   }
   .inx-in-active{border-color: #57a3f3;}
   
   .hot-txt{
     text-align: center;
+    cursor: pointer;
     font-size: 16px; color: #2A2A2A; span{margin-right: 20px;}
     .red{color: red; }
   }

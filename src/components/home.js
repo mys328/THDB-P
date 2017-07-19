@@ -9,6 +9,7 @@ import vreg from './common/fl-reg'
 import vlog from './common/fl-log'
 
 import usch from './common/u-search'
+import imsg from './common/u-imsg'
 import rhot from './common/r-hot'
 import items from './common/l-item'
 
@@ -23,6 +24,7 @@ export default {
   vlog,
   flog,
   usch,
+  imsg,
   rhot,
   items
 }

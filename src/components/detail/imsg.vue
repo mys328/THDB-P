@@ -2,7 +2,7 @@
   <div class="right-x-box">
     <v-usch :hots="sch"></v-usch>
     <div class="u-mr-box">
-      <v-items></v-items>
+      <v-imsg></v-imsg>
       <v-rhot @inputData="inputs"></v-rhot>
     </div>
   </div>

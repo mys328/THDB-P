@@ -64,6 +64,10 @@ class XHR {
     return axios.get(`${HTTPS}login/service`)
   }
 
+/*
+* 爱分析▪市场研究
+*/
+
   // 热门标签
   Labels () {
     return axios.get(`${HTTPS}business-ppt/label`)
@@ -76,7 +80,18 @@ class XHR {
   ShowHot () {
     return axios.get(`${HTTPS}business-ppt/show-hot`)
   }
-  // 发送手机验证码
+  // 搜索
+  Searchs (json) {
+    return axios.post(`${HTTPS}business-ppt/search`, qs.stringify(json), config)
+  }
+  // 报告详情页
+  ShowInfo (json) {
+    return axios.get(`${HTTPS}business-ppt/show-info`, {params: json})
+  }
+  // 生成图片-大屏预览
+  PdfPng (json) {
+    return axios.get(`${HTTPS}business-ppt/pdf-png`, {params: json})
+  }
 
   isErr (res, self) {
     setTimeout(() => {

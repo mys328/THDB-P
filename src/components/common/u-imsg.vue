@@ -1,35 +1,15 @@
 <template>
   <div class="left-i-box">
-    <div class="hot-title">最新报告</div>
+    <div class="hot-title">2016</div>
 
-    <div class="left-xx" v-for="(em, index) in DATA.data" :key="index">
-      <div class="xx-lft" @click="jump({path:'/imsg',query:{id:em.bp_id}})">
-        <img :src="em.bp_img" />
-        <ul>
-          <li class="s">{{em.bp_author}}</li>
-          <li class="r">{{em.bp_money}}</li>
-        </ul>
-      </div>
-      <div class="xx-rit">
-        <h3 @click="jump({path:'/imsg',query:{id:em.bp_id}})">{{em.bp_title}}</h3>
-        <p>{{em.bp_content}}</p>
-        <div class="ems">
-          <span v-for="(sm, inx) in em.label_name" :key="inx">{{sm}}</span>
-        </div>
-        <div class="time">
-          <span>{{em.create_time}}</span>
-          <span>阅读({{em.volume_num}})</span>
-          <span>下载({{em.download_num}})</span>
-        </div>
-      </div>
-    </div>
 
-    <div v-if="!DATA.data" class="null-data">
+
+    <div class="null-data">
       <img :src="bgs" />
       <p>没有找到相关信息，看看别的吧！</p>
     </div>
 
-    <div v-if="DATA.data" style="text-align:center;">
+    <div style="text-align:center;">
       <Page :total="DATA.total" :page-size="psize" @on-change="gotoPage"></Page>
     </div>
   </div>
