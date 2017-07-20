@@ -51,6 +51,7 @@
       hotSearch (inx) {
         let json = {}
         json.id = this.LAB[inx].id
+        json.p = 1
         this.$emit('inputData', this.LAB[inx].name)
         this.$store.commit('setSHjson', json)
         this.$store.dispatch('searchGo', json)

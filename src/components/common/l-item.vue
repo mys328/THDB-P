@@ -30,7 +30,7 @@
     </div>
 
     <div v-if="DATA.data" style="text-align:center;">
-      <Page :total="DATA.total" :page-size="psize" @on-change="gotoPage"></Page>
+      <Page :total="DATA.total" :page-size="psize" :current="pages" @on-change="gotoPage"></Page>
     </div>
   </div>
 </template>
@@ -49,11 +49,9 @@
     created () {
     },
     computed: {
-      DATA () { return this.$store.state.SearchDB }
+      DATA () { return this.$store.state.SearchDB },
+      pages () { return this.$store.state.SearchJSON.p }
     },
-    // watch: {
-    //   DATA: 'chpage'
-    // },
     methods: {
       getLabel () {
         XHR.Labels().then((res) => {
@@ -62,14 +60,9 @@
           }
         })
       },
-      chpage (ne, old) {
-        console.log(ne, old)
-        // this.pages = 1
-      },
       gotoPage (page) {
         let json = this.$store.state.SearchJSON
         json.p = page
-        this.pages = page
         this.$store.commit('setSHjson', json)
         this.$store.dispatch('searchGo', json)
       }

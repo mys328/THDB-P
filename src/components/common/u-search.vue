@@ -1,7 +1,9 @@
 <template>
   <div class="seach-box">
     <Input placeholder="请输入..." style="width:280px;" v-model="sch" size="large">
-      <Icon slot="append" type="ios-search-strong" size="20" @click="goSearch"></Icon>
+      <div slot="append" @click="goSearch">
+        <Icon type="ios-search-strong" size="20"></Icon>
+      </div>
     </Input>
     <div class="hot-msg">
       <span>搜索热词：</span>
@@ -48,6 +50,7 @@
         if (this.sch.replace(/^\s*$/g, '') !== '') {
           let json = {}
           json.name = this.sch
+          json.p = 1
           this.isSearch = true
           this.$store.commit('setSHjson', json)
           this.$store.dispatch('searchGo', json)
@@ -58,6 +61,7 @@
       hotSearch (name) {
         let json = {}
         json.name = name
+        json.p = 1
         this.sch = name
         this.isSearch = true
         this.$store.commit('setSHjson', json)

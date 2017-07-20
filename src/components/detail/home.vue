@@ -15,9 +15,17 @@
         sch: ''
       }
     },
+    created () {
+      this.initData()
+    },
     methods: {
       inputs (txt) {
         this.sch = txt
+      },
+      initData () {
+        let json = {p: 1}
+        this.$store.commit('setSHjson', json)
+        this.$store.dispatch('searchGo', json)
       }
     }
   }

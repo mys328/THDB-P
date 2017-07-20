@@ -5,7 +5,7 @@
         <div class="inx-top-l flex-wrap row-flex page">
           <div>卡车之家大数据</div>
           <div>首页</div>
-          <Poptip placement="bottom" trigger="hover">
+          <Poptip placement="bottom" trigger="hover" class="h-serve">
             <div>服务</div>
             <div slot="content" class="fw-box">
               <div @click="$store.commit('setFS', true)">市场调研</div>
@@ -19,7 +19,7 @@
         </div>
         <div class="inx-top-r flex-wrap row-flex midCenter page">
 
-          <Poptip v-if="isLogin" placement="bottom" trigger="hover">
+          <Poptip v-if="isLogin" placement="bottom" trigger="hover" class="u-serve">
             <div class="logo-box flex-wrap row-flex midCenter">
               <img :src="userInfo.user_img" class="im-logo" />
               <div class="fso icon-dow">我是用户Y</div>
@@ -138,6 +138,7 @@
         if (this.sch.replace(/^\s*$/g, '') !== '') {
           let json = {}
           json.name = this.sch
+          json.p = 1
           this.isSearch = true
           this.$store.commit('setSHjson', json)
           this.$store.dispatch('searchGo', json)
@@ -148,6 +149,7 @@
       hotSearch (name) {
         let json = {}
         json.name = name
+        json.p = 1
         this.sch = name
         this.isSearch = true
         this.$store.commit('setSHjson', json)
@@ -178,7 +180,7 @@
   .inx-top-r{ -webkit-justify-content:flex-end;justify-content:flex-end;}
   .inx-top-r > div{min-width: 30px; height: 60px; font-size: 12px; color: #666; line-height: 60px;margin-left: 20px; cursor: pointer;}
   .inx-top-r .log-btn{ width: 80px; height: 40px; border-radius: 20px; background-color: #3A8DFF; color: #fff; text-align: center; line-height: 40px; font-size: 14px;}
-  .fw-box,.user-box{position: absolute; width: 120px; height: auto; top: 8px; left: 0;background-color: #fff;}
+  .fw-box,.user-box{width: 120px; height: auto;background-color: #fff;}
   .fw-box div{height: 40px; color: #666; font-size: 14px; line-height: 40px; cursor: pointer;text-align: center;}
   .fw-box div:hover{background: #3A8DFF; color: #fff; }
   

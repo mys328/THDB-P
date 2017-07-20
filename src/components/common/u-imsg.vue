@@ -1,57 +1,68 @@
 <template>
   <div class="left-i-box">
-    <div class="hot-title">2016</div>
-
-
-
-    <div class="null-data">
-      <img :src="bgs" />
-      <p>没有找到相关信息，看看别的吧！</p>
+    <h3>{{DATA.bp_title}}</h3>
+    <div class="ems">
+      <span v-for="(sm, inx) in DATA.label_name" :key="inx">{{sm}}</span>
     </div>
-
-    <div style="text-align:center;">
-      <Page :total="DATA.total" :page-size="psize" @on-change="gotoPage"></Page>
+    <div class="time">
+      <span>{{DATA.create_time}}</span>
+      <span>阅读({{DATA.volume_num}})</span>
+      <span>下载({{DATA.download_num}})</span>
+    </div>
+    <img :src="urls" class="us-img"/>
+    <div class="foots-box">
+      <Page :current="1" :total="IMG.length" :page-size="psize" @on-change="gotoPage" simple></Page>
+      <div class="ft-rt-box">
+        <em>¥{{DATA.bp_money}}</em>
+        <span class="lock" @click="goBig">
+          <Icon type="arrow-resize" size="16"></Icon>大屏预览</span>
+        <span class="download"><i class="fso icon-downlo"></i>下载</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import bgs from '@/common/null.png'
   import XHR from '@/api'
   export default {
     data () {
       return {
-        psize: 5,
-        bgs: bgs,
-        HOT: []
+        psize: 1,
+        DATA: {},
+        IMG: [],
+        urls: ''
       }
     },
     created () {
+      this.getMsg()
     },
     computed: {
-      DATA () { return this.$store.state.SearchDB }
     },
-    // watch: {
-    //   DATA: 'chpage'
-    // },
+    watch: {
+    },
     methods: {
-      getLabel () {
-        XHR.Labels().then((res) => {
+      getMsg () {
+        let json = {id: this.$route.query.id}
+        XHR.ShowInfo(json)
+        .then((res) => {
           if (res.data.status === 0) {
-            this.LAB = res.data.data
+            this.DATA = res.data.data
+          }
+        })
+        XHR.PdfPng(json)
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.IMG = res.data.data
+            this.urls = this.IMG[0]
           }
         })
       },
-      chpage (ne, old) {
-        console.log(ne, old)
-        // this.pages = 1
-      },
       gotoPage (page) {
-        let json = this.$store.state.SearchJSON
-        json.p = page
-        this.pages = page
-        this.$store.commit('setSHjson', json)
-        this.$store.dispatch('searchGo', json)
+        let pgs = page - 1
+        this.urls = this.IMG[pgs]
+      },
+      goBig () {
+        window.open(`big.html?id=${this.$route.query.id}`)
       }
     }
   }
@@ -61,24 +72,27 @@
   .left-i-box{
     float: left;
     margin-left: 20px;
-  }
-  .left-xx{height: 218px; width: 740px; border-bottom: 1px solid #DFE3EB; overflow: hidden; padding-bottom: 19px; margin-bottom: 20px;}
-  .xx-lft{float: left;
-    img{display: block; width: 280px; height: 158px;}
-    ul{ height: 40px; width: 280px; border:1px solid #DFE3EB; border-top: 0; li{float: left;}}
-    .s{width: 200px; height: 40px; line-height: 40px; float: left; overflow: hidden; word-break:inherit; text-overflow:ellipsis; font-size: 14px;padding-left: 10px;}
-    .r{width: 78px; height: 40px; line-height: 40px; text-align: right; padding-right: 10px; }
-  }
-  .xx-rit{width: 460px; height: 218px; padding-left: 20px; float: right;
-    h3{font-size: 18px; color: #333; overflow: hidden;word-break:inherit; text-overflow:ellipsis; display: block; height: 30px; line-height: 30px;}
+
+    h3{font-size: 18px; color: #333; overflow: hidden;word-break:inherit; text-overflow:ellipsis; display: block; height: 30px; line-height: 30px; margin-top: 15px;}
     h3:hover{color: #3A8DFF;}
     p{font-size: 14px; color: #666; line-height:25px; height: 120px; overflow: hidden; }
-    .ems span{display: inline-block; background-color: #2FBB8C; border-radius: 2px; color: #fff; font-size: 12px; margin:10px 4px 0 0; padding: 0 4px;}
+    .ems span{display: inline-block; background-color: #2FBB8C; border-radius: 2px; color: #fff; font-size: 12px; margin:6px 4px 5px 0; padding: 0 4px;}
     .time{height: 30px; line-height: 30px; font-size: 12px; color: #999;
       span{padding:0 10px;}
     }
     .time span:first-child{ padding-left: 0; border-right:1px solid #999;}
     .time span:last-child{ border-left:1px solid #999;}
+    .us-img{display: block; width: 100%; height: auto;}
   }
-  .null-data{text-align: center; img{margin-top: 100px;} p{font-size: 14px; color: #999;}}
+  .foots-box{width: 100%; height: 50px; background: #F5F6FA;border: 1px solid #DFE3EB; border-top: 0;}
+  .ft-rt-box{float: right; height: 50px;
+    em{font-size: 20px; font-style: normal; color: #E41B3C; line-height: 50px; padding-right: 10px;}
+    span{display: inline-block; text-align: center; margin-right: 10px; position: relative; top: -3px;}
+    .lock{width: 80px; height: 30px; border: 1px solid #3A8DFF; border-radius: 2px; font-size: 12px;color: #3A8DFF; line-height: 26px; 
+      i{padding-right: 5px; position: relative; top: 2px;}}
+      .download{width: 80px; height: 30px; background: #3A8DFF;border-radius: 2px; color: #fff; font-size: 12px; line-height: 28px;
+        i{font-size: 10px; padding-right: 5px;}
+      }
+  }
+  .foots-box .ivu-page{ margin-top: 12px; }
 </style>

@@ -16,7 +16,9 @@ html {
   -ms-text-size-adjust: 100%; /* 3 */
   -webkit-text-size-adjust: 100%; /* 3 */
 }
-
+html,body{
+  height: 100%; width: 100%; overflow: scroll;
+}
 /* Sections
    ========================================================================== */
 
