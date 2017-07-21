@@ -82,7 +82,7 @@
     }
     .time span:first-child{ padding-left: 0; border-right:1px solid #999;}
     .time span:last-child{ border-left:1px solid #999;}
-    .us-img{display: block; width: 100%; height: auto;}
+    .us-img{display: block; width: 100%; height: auto; padding: 0; margin: 10px 0 0;}
   }
   .foots-box{width: 100%; height: 50px; background: #F5F6FA;border: 1px solid #DFE3EB; border-top: 0;}
   .ft-rt-box{float: right; height: 50px;

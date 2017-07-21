@@ -104,6 +104,7 @@
                   desc: ''
                 })
               } else {
+                this.loadingC = false
                 this.$Notice.error({
                   title: res.data.msg,
                   desc: ''
