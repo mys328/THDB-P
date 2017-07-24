@@ -14,7 +14,9 @@ const store = new Vuex.Store({
     Feml: false,  // 弹窗-修改邮箱
 
     SearchDB: {},  // 前台搜索
-    SearchJSON: {} // 搜索条件
+    SearchJSON: {}, // 搜索条件
+
+    Order: {}  // 订单信息
   },
   mutations: {
     setUserInfo (state, v) { state.userInfo = v },
@@ -26,7 +28,8 @@ const store = new Vuex.Store({
     setFT (state, v) { state.Ftel = v },
     setFE (state, v) { state.Feml = v },
     setSHjson (state, v) { state.SearchJSON = v },
-    setSH (state, v) { state.SearchDB = v }
+    setSH (state, v) { state.SearchDB = v },
+    buy (state, v) { state.Order = v }
   },
   actions: {
     loginOut ({commit}) {

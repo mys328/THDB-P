@@ -92,6 +92,10 @@ class XHR {
   PdfPng (json) {
     return axios.get(`${HTTPS}business-ppt/pdf-png`, {params: json})
   }
+  // 订单
+  OrderAdd (json) {
+    return axios.post(`${HTTPS}order/add`, qs.stringify(json), config)
+  }
 
   isErr (res, self) {
     setTimeout(() => {

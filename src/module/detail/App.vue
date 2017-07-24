@@ -27,45 +27,42 @@
     <div class="layout-content">
       <Row>
         <i-col span="4" class="leftBox">
-          <Menu active-name="1-1" width="auto" theme="light" :open-names="['1']">
-            <Submenu name="1">
-              <template slot="title">
+          <Menu :active-name="$route.path" width="auto" theme="light" :open-names="['1']">
+            <Menu-group>
+              <Menu-item name="/home" @click.native="jump('/home')">
                 <Icon type="ios-paper" size="16"></Icon>
                 爱分析・市场研究
-              </template>
-              <Menu-item name="1-1">最新报告</Menu-item>
-            </Submenu>
-            <Submenu name="2">
-              <template slot="title">
+              </Menu-item>
+            </Menu-group>
+            <Menu-group>
+              <Menu-item name="/know" @click.native="jump('/know')">
                 <Icon type="stats-bars" size="16"></Icon>
                 早知道・流量统计
-              </template>
-              <Menu-item name="2-1">选项 1</Menu-item>
-              <Menu-item name="2-2">选项 2</Menu-item>
-            </Submenu>
+              </Menu-item>
+            </Menu-group>
             <Submenu name="3">
               <template slot="title">
                 <Icon type="ios-pulse-strong" size="16"></Icon>
                 定星盘・竞争分析
               </template>
-              <Menu-item name="3-1">选项 1</Menu-item>
-              <Menu-item name="3-2">选项 2</Menu-item>
+              <Menu-item name="/star" @click.native="jump('/star')">报告管理</Menu-item>
+              <Menu-item name="/addstar" @click.native="jump('/addstar')">新增报告</Menu-item>
             </Submenu>
             <Submenu name="4">
               <template slot="title">
                 <Icon type="arrow-graph-up-right" size="16"></Icon>
                 敲门砖・网销报告
               </template>
-              <Menu-item name="4-1">报告管理</Menu-item>
-              <Menu-item name="4-2">新增报告</Menu-item>
+              <Menu-item name="/door" @click.native="jump('/door')">报告管理</Menu-item>
+              <Menu-item name="/adoor" @click.native="jump('/adoor')">新增报告</Menu-item>
             </Submenu>
             <Submenu name="5">
               <template slot="title">
                 <Icon type="eye" size="16"></Icon>
                 金手指・市场洞察
               </template>
-              <Menu-item name="5-1">整体数据分析</Menu-item>
-              <Menu-item name="5-2">新增报告</Menu-item>
+              <Menu-item name="/digit" @click.native="jump('/digit')">整体数据分析</Menu-item>
+              <Menu-item name="/adigit" @click.native="jump('/adigit')">新增报告</Menu-item>
             </Submenu>
           </Menu>
         </i-col>
@@ -165,7 +162,7 @@
   }
   .ivu-row{min-height: 750px;}
   .layout-content-main{
-    padding: 10px;
+    /*padding: 10px;*/
   }
   .layout-copy{
     text-align: center;

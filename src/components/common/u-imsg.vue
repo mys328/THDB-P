@@ -16,9 +16,21 @@
         <em>¥{{DATA.bp_money}}</em>
         <span class="lock" @click="goBig">
           <Icon type="arrow-resize" size="16"></Icon>大屏预览</span>
-        <span class="download"><i class="fso icon-downlo"></i>下载</span>
+        <span class="download" @click="buyFile">
+          <i class="fso icon-downlo"></i>下载</span>
       </div>
     </div>
+    <Modal v-model="showBuy" width="360" class-name="vertical-center-modal">
+      <p slot="header" style="color:#3A8DFF;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>支付提醒</span>
+      </p>
+      <div style="text-align:center;padding-bottom:25px;">
+        <p>是否支付<em style="font-size:22px;color:#E41B3C;">¥{{DATA.bp_money}}</em>购买</p>
+        <p>《{{DATA.bp_title}}》</p>
+      </div>
+      <Button type="info" size="large" long :loading="modal_loading" @click="goBuy">确认支付</Button>
+    </Modal>
   </div>
 </template>
 
@@ -27,6 +39,8 @@
   export default {
     data () {
       return {
+        showBuy: false,
+        modal_loading: false,
         psize: 1,
         DATA: {},
         IMG: [],
@@ -63,6 +77,24 @@
       },
       goBig () {
         window.open(`big.html?id=${this.$route.query.id}`)
+      },
+      buyFile () {
+        if (this) {
+          this.showBuy = true
+        }
+      },
+      goBuy () {
+        this.modal_loading = true
+        XHR.OrderAdd({id: this.$route.query.id})
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.modal_loading = false
+            this.showBuy = false
+            this.$store.commit('buy', res.data.data)
+            this.$Message.success('订单提交成功')
+            this.jump('/buy')
+          }
+        })
       }
     }
   }
@@ -95,4 +127,5 @@
       }
   }
   .foots-box .ivu-page{ margin-top: 12px; }
+  em{font-style: normal;}
 </style>
