@@ -1,27 +1,36 @@
 <template>
-  <div class="ico-x-box">
-    <div class="">
+  <div>
+    <v-starf></v-starf>
+    <div class="str-x-box">
+       <div class="hot-title" style="height:38px; line-height:38px;">订单信息</div>
       <Table border :columns="TIT" :data="DATA"></Table>
+      <div style="text-align:right; padding-top:20px;">
+        <Page :total="total" :page-size="psize" :current="page" @on-change="gotoPage"></Page>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import XHR from '@/api'
   export default {
     data () {
       return {
+        page: 1,
+        psize: 5,
+        total: 0,
         TIT: [
           {
             title: '编号',
-            key: 'num'
+            key: 'id'
           },
           {
             title: '创建时间',
-            key: 'cretime'
+            key: 'create_time'
           },
           {
             title: '报告名称',
-            key: 'name'
+            key: 'compete_name'
           },
           {
             title: '竞争指标',
@@ -29,23 +38,23 @@
           },
           {
             title: '选择粒度',
-            key: 'ctype'
+            key: 'check_type'
           },
           {
             title: '大类，子类',
-            key: 'type'
+            key: 'bigtype_name'
           },
           {
             title: '地区选择',
-            key: 'adr'
+            key: 'area_name'
           },
           {
             title: '所选时间',
-            key: 'time'
+            key: 'start_time'
           },
           {
             title: '状态',
-            key: 'sta'
+            key: 'status'
           },
           {
             title: '操作',
@@ -78,22 +87,26 @@
             }
           }
         ],
-        DATA: [
-          {
-            num: '22',
-            cretime: '2012-23-34',
-            name: '北京市朝阳区芍药居',
-            compname: '市朝药居',
-            ctype: '药居',
-            type: 'dfg',
-            adr: '北京市',
-            time: '34-56-78',
-            sta: 'over'
-          }
-        ]
+        DATA: []
       }
     },
+    created () {
+      this.getList()
+    },
     methods: {
+      getList () {
+        XHR.CompList({p: this.page})
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.DATA = res.data.data
+            this.tptal = res.data.total
+            this.psize = res.data.size
+          }
+        })
+      },
+      gotoPage (page) {
+
+      },
       show (index) {
         this.$Modal.info({
           title: '用户信息',
@@ -111,11 +124,10 @@
 </script>
 
 <style lang="less" scoped>
-  .ico-x-box{ width: 100%; height: 170px; background-color: #fff;}
-  .ico-tp-box{ width: 1300px; margin:0 auto; height: 170px; padding: 40px 0;text-align: center;
-    div{ border-left: 1px solid #DFE3EB;}
-    i{font-size: 42px; }
-    p{margin-top: 10px;}
-    div:first-child{border:0;}
+  .str-x-box{
+    background: #FFF; min-height: 690px; padding:12px 20px 0;
+    border: 1px solid #DFE3EB;
+    
   }
+  
 </style>

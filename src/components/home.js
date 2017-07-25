@@ -13,6 +13,8 @@ import imsg from './common/u-imsg'
 import rhot from './common/r-hot'
 import items from './common/l-item'
 
+import starf from './common/star-form'
+
 export default {
   banner,
   auto,
@@ -26,5 +28,6 @@ export default {
   usch,
   imsg,
   rhot,
-  items
+  items,
+  starf
 }

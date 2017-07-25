@@ -97,6 +97,13 @@ class XHR {
     return axios.post(`${HTTPS}order/add`, qs.stringify(json), config)
   }
 
+/*
+* 定星盘・竞争分析
+*/
+  // 报告列表
+  CompList (json) {
+    return axios.get(`${HTTPS}compete/index`, {params: json})
+  }
   isErr (res, self) {
     setTimeout(() => {
     }, 400)

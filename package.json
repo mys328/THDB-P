@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
-    "echarts": "^3.4.0",
+    "echarts": "^3.6.2",
     "iview": "^2.0.0-rc.13",
     "pdfmake": "^0.1.31",
     "qs": "^6.3.1",
