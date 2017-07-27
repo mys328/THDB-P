@@ -40,10 +40,10 @@
         cityList: [],
         formData: {
           compete_name: '',
-          compete: null,
-          check: null,
-          big_type: null,
-          chiled_type: null
+          compete: '',
+          check: '',
+          big_type: '',
+          chiled_type: ''
         }
       }
     }

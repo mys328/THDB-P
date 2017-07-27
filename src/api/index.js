@@ -104,6 +104,11 @@ class XHR {
   CompList (json) {
     return axios.get(`${HTTPS}compete/index`, {params: json})
   }
+  // 查看图片
+  CompImg (json) {
+    return axios.get(`${HTTPS}compete/show-image`, {params: json})
+  }
+
   isErr (res, self) {
     setTimeout(() => {
     }, 400)

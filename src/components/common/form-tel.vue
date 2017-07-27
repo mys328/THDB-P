@@ -31,7 +31,7 @@
       Ftel () { return this.$store.state.Ftel }
     },
     data () {
-      const validateTel = (rule, value, callback) => {
+      const validateTel = (rule, value, callback, options) => {
         if (value === '') {
           return callback(new Error('请输入手机号'))
         }

@@ -34,7 +34,7 @@
           },
           {
             title: '竞争指标',
-            key: 'compname'
+            key: 'compete_name'
           },
           {
             title: '选择粒度',
@@ -42,7 +42,15 @@
           },
           {
             title: '大类，子类',
-            key: 'bigtype_name'
+            key: 'bigtype_name,childtype_name',
+            render: (h, params) => {
+              return h('p', [
+                h('span', {
+                  style: {marginRight: '10px'}
+                }, this.DATA[params.index].bigtype_name),
+                h('span', {}, this.DATA[params.index].childtype_name)
+              ])
+            }
           },
           {
             title: '地区选择',
@@ -68,7 +76,7 @@
                   },
                   on: {
                     click: () => {
-                      this.show(params.index)
+                      this.goBig(params.index)
                     }
                   }
                 }, '查看'),
@@ -82,7 +90,7 @@
                       this.show(params.index)
                     }
                   }
-                }, '编辑')
+                }, '删除')
               ])
             }
           }
@@ -98,13 +106,16 @@
         XHR.CompList({p: this.page})
         .then((res) => {
           if (res.data.status === 0) {
-            this.DATA = res.data.data
-            this.tptal = res.data.total
-            this.psize = res.data.size
+            this.DATA = res.data.data.data
+            this.total = res.data.data.num
+            this.psize = res.data.data.size
           }
         })
       },
-      gotoPage (page) {
+      goBig (index) {
+        window.open(`konw.html?id=${this.DATA[index].id}`)
+      },
+      gotoPage (num) {
 
       },
       show (index) {
