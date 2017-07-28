@@ -2,7 +2,7 @@
   <div>
     <v-starf></v-starf>
     <div class="str-x-box">
-       <div class="hot-title" style="height:38px; line-height:38px;">订单信息</div>
+       <div class="hot-title" style="height:38px; line-height:38px;">报告管理</div>
       <Table border :columns="TIT" :data="DATA"></Table>
       <div style="text-align:right; padding-top:20px;">
         <Page :total="total" :page-size="psize" :current="page" @on-change="gotoPage"></Page>
@@ -22,6 +22,7 @@
         TIT: [
           {
             title: '编号',
+            width: 66,
             key: 'id'
           },
           {
@@ -74,6 +75,7 @@
                     type: 'text',
                     size: 'small'
                   },
+                  style: {color: '#0c7dff'},
                   on: {
                     click: () => {
                       this.goBig(params.index)
@@ -85,6 +87,7 @@
                     type: 'text',
                     size: 'small'
                   },
+                  style: {color: '#f44336'},
                   on: {
                     click: () => {
                       this.show(params.index)
@@ -116,7 +119,8 @@
         window.open(`konw.html?id=${this.DATA[index].id}`)
       },
       gotoPage (num) {
-
+        this.page = num
+        this.getList()
       },
       show (index) {
         this.$Modal.info({

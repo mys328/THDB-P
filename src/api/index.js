@@ -108,6 +108,50 @@ class XHR {
   CompImg (json) {
     return axios.get(`${HTTPS}compete/show-image`, {params: json})
   }
+  // 竞争力一览
+  CompFloat (json) {
+    return axios.post(`${HTTPS}compete/compete-list`, qs.stringify(json), config)
+  }
+
+/*
+* 公共接口
+*/
+  // 首页轮播图
+  getBanner () {
+    return axios.get(`${HTTPS}unity/banner`)
+  }
+  // 大类
+  bigType () {
+    return axios.get(`${HTTPS}unity/big-type`)
+  }
+  // 子类
+  chiType () {
+    return axios.get(`${HTTPS}unity/child-type`)
+  }
+  // 城市
+  getCity (json) {
+    return axios.get(`${HTTPS}unity/city`, {params: json})
+  }
+  // 省份
+  getPro (json) {
+    return axios.get(`${HTTPS}unity/province`, {params: json})
+  }
+  // 大区
+  getArea () {
+    return axios.get(`${HTTPS}unity/area`)
+  }
+  // 品牌
+  getBrand (json) {
+    return axios.get(`${HTTPS}unity/brand`, {params: json})
+  }
+  // 车系
+  getSeri (json) {
+    return axios.get(`${HTTPS}unity/series`, {params: json})
+  }
+  // 车型
+  getMod (json) {
+    return axios.get(`${HTTPS}unity/models`, {params: json})
+  }
 
   isErr (res, self) {
     setTimeout(() => {

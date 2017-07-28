@@ -13,7 +13,7 @@
       </div>
 
       <div class="br-box">
-        <span class="lock">关闭</span>
+        <span class="lock" @click="closeW">关闭</span>
         <span class="download" @click="Download"><i class="fso icon-downlo"></i>下载</span>
       </div>
       <div style="clear:both;"></div>

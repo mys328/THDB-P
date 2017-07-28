@@ -1,24 +1,9 @@
 <template>
   <div class="inx-ad-box"><!-- autoplay -->
-    <Carousel v-model="focus" :autoplay-speed="autoplaySpeed">
-      <Carousel-item>
+    <Carousel v-model="focus" autoplay :autoplay-speed="autoplaySpeed">
+      <Carousel-item v-for="(em, inx) in DATA" :key="inx">
         <div class="demo-carousel">
-          <img src="http://usr.im/1300x540">
-        </div>
-      </Carousel-item>
-      <Carousel-item>
-        <div class="demo-carousel">
-          <img src="http://usr.im/1300x540">
-        </div>
-      </Carousel-item>
-      <Carousel-item>
-        <div class="demo-carousel">
-          <img src="http://usr.im/1300x540">
-        </div>
-      </Carousel-item>
-      <Carousel-item>
-        <div class="demo-carousel">
-          <img src="http://usr.im/1300x540">
+          <img :src="em">
         </div>
       </Carousel-item>
     </Carousel>
@@ -26,12 +11,21 @@
 </template>
 
 <script>
+import XHR from '@/api'
 export default {
   data () {
     return {
       focus: 0, // 索引图
-      autoplaySpeed: 2500  // 间隔时间
+      autoplaySpeed: 2500,  // 间隔时间
+      DATA: []
     }
+  },
+  created () {
+    XHR.getBanner().then((res) => {
+      if (res.data.status === 0) {
+        this.DATA = res.data.data
+      }
+    })
   }
 }
 </script>

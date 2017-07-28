@@ -18,6 +18,10 @@ export default {
       } else {
         return ''
       }
+    },
+    closeW () {
+      window.open('', '_self')
+      window.close()
     }
   }
 }
