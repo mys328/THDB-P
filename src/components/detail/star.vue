@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-starf></v-starf>
+    <v-starf @goSear="sear"></v-starf>
     <div class="str-x-box">
        <div class="hot-title" style="height:38px; line-height:38px;">报告管理</div>
       <Table border :columns="TIT" :data="DATA"></Table>
@@ -8,6 +8,17 @@
         <Page :total="total" :page-size="psize" :current="page" @on-change="gotoPage"></Page>
       </div>
     </div>
+    <Modal v-model="delMod" width="360">
+      <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="information-circled"></Icon>
+        <span>删除确认</span>
+      </p>
+      <div style="text-align:center">
+        <p style="font-size:14px;">您将要删除编号为{{delTxt}}的报告，</p>
+        <p style="font-size:14px; padding-bottom: 25px;">是否继续删除？</p>
+        <Button type="error" size="large" long :loading="modal_loading" @click="del">删除</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -16,9 +27,20 @@
   export default {
     data () {
       return {
+        delMod: false,
+        modal_loading: false,
+        delTxt: '',
+        delInx: 0,
         page: 1,
         psize: 5,
         total: 0,
+        formData: {
+          compete_name: '',
+          compete: '',
+          check: '',
+          big_type: '',
+          chiled_type: ''
+        },
         TIT: [
           {
             title: '编号',
@@ -90,7 +112,7 @@
                   style: {color: '#f44336'},
                   on: {
                     click: () => {
-                      this.show(params.index)
+                      this.Remove(params.index)
                     }
                   }
                 }, '删除')
@@ -106,7 +128,9 @@
     },
     methods: {
       getList () {
-        XHR.CompList({p: this.page})
+        let json = this.formData
+        json.p = this.page
+        XHR.CompList(json)
         .then((res) => {
           if (res.data.status === 0) {
             this.DATA = res.data.data.data
@@ -122,16 +146,31 @@
         this.page = num
         this.getList()
       },
-      show (index) {
-        this.$Modal.info({
-          title: '用户信息',
-          content: `姓名：`
+      Remove (index) {
+        this.delInx = index
+        this.delTxt = this.DATA[index].id
+        this.delMod = true
+      },
+      del () {
+        this.modal_loading = true
+        XHR.CompDel({id: this.delTxt})
+        .then((res) => {
+          if (res.data.status === 0) {
+            this.delMod = false
+            this.modal_loading = false
+            this.DATA.splice(this.delInx, 1)
+          }
         })
       },
-      remove (index) {
-        this.$Modal.info({
-          title: '用户信息',
-          content: `姓名：`
+      sear (json) {
+        this.formData = json
+        XHR.CompSear(json).then((res) => {
+          if (res.data.status === 0) {
+            this.page = 1
+            this.DATA = res.data.data.data
+            this.total = res.data.data.num
+            this.psize = res.data.data.size
+          }
         })
       }
     }

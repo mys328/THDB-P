@@ -96,6 +96,10 @@
       if (this.getCookie('userId') !== '') {
         this.$store.commit('setLogin', true)
         this.userInfo = JSON.parse(localStorage.getItem('USERINFO'))
+        let DB = JSON.parse(localStorage.getItem('USERINFO')) || ''
+        if (DB === '') {
+          this.initLD()
+        }
       } else {
         location.href = 'index.html'
       }
@@ -105,8 +109,6 @@
     mounted () {
     },
     methods: {
-      readMsg () {
-      },
       LG (v) {
         this.$store.commit('setLogBox', true)
         this.$store.commit('setTP', v)
@@ -115,6 +117,48 @@
         XHR.Labels().then((res) => {
           if (res.data.status === 0) {
             this.LAB = res.data.data
+          }
+        })
+      },
+      initLD () {
+        XHR.bigType().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('BIG_TYPE', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.chiType().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('CHI_TYPE', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getCity().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_CITY', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getPro().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_PRO', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getArea().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_AREA', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getBrand().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_BRAN', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getSeri().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_SERI', JSON.stringify(res.data.data))
+          }
+        })
+        XHR.getMod().then((res) => {
+          if (res.data.status === 0) {
+            localStorage.setItem('U_MOD', JSON.stringify(res.data.data))
           }
         })
       }

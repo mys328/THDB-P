@@ -100,9 +100,21 @@ class XHR {
 /*
 * 定星盘・竞争分析
 */
+  // 竞争指标
+  ComPete () {
+    return axios.get(`${HTTPS}compete/compete`)
+  }
+  // 粒度参数
+  ComCheck () {
+    return axios.get(`${HTTPS}compete/check`)
+  }
   // 报告列表
   CompList (json) {
     return axios.get(`${HTTPS}compete/index`, {params: json})
+  }
+ // 删除报告
+  CompDel (json) {
+    return axios.get(`${HTTPS}compete/delete`, {params: json})
   }
   // 查看图片
   CompImg (json) {
@@ -111,6 +123,10 @@ class XHR {
   // 竞争力一览
   CompFloat (json) {
     return axios.post(`${HTTPS}compete/compete-list`, qs.stringify(json), config)
+  }
+  // 搜索报告
+  CompSear (json) {
+    return axios.post(`${HTTPS}compete/search`, qs.stringify(json), config)
   }
 
 /*

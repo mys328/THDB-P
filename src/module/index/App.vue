@@ -9,11 +9,11 @@
             <div>服务</div>
             <div slot="content" class="fw-box">
               <div @click="$store.commit('setFS', true)">市场调研</div>
-              <div>用户深度挖掘</div>
-              <div>用户行为分析</div>
-              <div>舆情监测</div>
-              <div>市场预测</div>
-              <div>决策支持</div>
+              <div @click="$store.commit('setFS', true)">用户深度挖掘</div>
+              <div @click="$store.commit('setFS', true)">用户行为分析</div>
+              <div @click="$store.commit('setFS', true)">舆情监测</div>
+              <div @click="$store.commit('setFS', true)">市场预测</div>
+              <div @click="$store.commit('setFS', true)">决策支持</div>
             </div>
           </Poptip>
         </div>
