@@ -130,7 +130,8 @@
       getList () {
         let json = this.formData
         json.p = this.page
-        XHR.CompList(json)
+        // XHR.CompList(json)
+        XHR.CompSear(json)
         .then((res) => {
           if (res.data.status === 0) {
             this.DATA = res.data.data.data
@@ -170,6 +171,11 @@
             this.DATA = res.data.data.data
             this.total = res.data.data.num
             this.psize = res.data.data.size
+          } else if (res.data.msg === '未查询到数据') {
+            this.page = 1
+            this.DATA = []
+            this.total = 0
+            this.psize = 0
           }
         })
       }

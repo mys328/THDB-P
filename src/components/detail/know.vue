@@ -86,7 +86,6 @@
 <script>
   import echarts from 'echarts'
   import walden from '@/common/walden.json'
-  // const WALDEN = JSON.parse(walden)
   echarts.registerTheme('love', walden)
   export default {
     data () {

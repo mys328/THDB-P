@@ -128,6 +128,21 @@ class XHR {
   CompSear (json) {
     return axios.post(`${HTTPS}compete/search`, qs.stringify(json), config)
   }
+/*
+* 敲门砖・网销报告
+*/
+  // 搜索接口
+  repSeh (json) {
+    return axios.post(`${HTTPS}new-report/search`, qs.stringify(json), config)
+  }
+
+/*
+* 金手指，市场洞察
+*/
+  // 整体市场数据分析
+  marKet (json) {
+    return axios.post(`${HTTPS}market/index`, qs.stringify(json), config)
+  }
 
 /*
 * 公共接口
